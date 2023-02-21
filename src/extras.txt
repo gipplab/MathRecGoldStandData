@@ -1,0 +1,18 @@
+Functionality/Step, Script, Extract TOIs, [extractTOIs.py](), Convert LaTeX to MathML and extract MOIs, [extractMOIs.py](), Remove short/irrelevant documents, [remvShrtdocs.py](), Discipline-wise documents, [docsPerMSC.py](), , , , , , ,
+
+
+
+Step No., Name, Script
+1, Mathematical discipline selection, [reprMSCsel.py]()
+2, Working dataset creation, [workingDset.py]()
+3, Capture probability calculation, [captureProb.py]()
+4, Final seeds selection, [finalSeedsSel.py]()
+
+
+
+| No. | Functionality/Step                             | Script                |
+|-----|------------------------------------------------|-----------------------|
+| 1   | Load zbMATH Open documents on ES               | [loadDOcsonES.py]()   |
+| 2   | indexing Configuration (text and text + Math ) | [collectionsRef.py]() |
+| 3   | Generate recommendations                       | [genRecms.py]()       |
+| 4   | Evaluate recommendation                        | [evalRecms.py]()      |

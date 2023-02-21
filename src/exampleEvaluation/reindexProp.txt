@@ -1,0 +1,213 @@
+PUT temp_zbmath_my
+{
+  "settings":{
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "analysis" : {
+    "filter" : {
+      "truncatetwo" : {
+        "length" : "2",
+        "type" : "truncate"
+      },
+      "ccpatterns" : {
+        "type" : "pattern_capture",
+        "preserve_original" : "true",
+        "patterns" : [
+          """^(\*?[0-9][0-9]).[0-9x][0-9x]$""",
+          """^(\*?[0-9][0-9][a-z])[0-9x][0-9x]$""",
+          "^[0-9][0-9](.[0-9x][0-9x])$"
+        ]
+      },
+      "shingle" : {
+        "max_shingle_size" : "3",
+        "min_shingle_size" : "2",
+        "type" : "shingle"
+      },
+      "sn_filter" : {
+        "catenate_all" : "true",
+        "type" : "word_delimiter"
+      },
+      "particles" : {
+        "type" : "pattern_capture",
+        "preserve_original" : "true",
+        "patterns" : [
+          "([^'.:]+)"
+        ]
+      }
+    },
+    "char_filter" : {
+      "truncatetwo" : {
+        "pattern" : "^(..).*$",
+        "type" : "pattern_replace",
+        "replacement" : "$1"
+      },
+      "an_filter" : {
+        "pattern" : "^0+(.*)",
+        "type" : "pattern_replace",
+        "replacement" : "$1"
+      },
+      "strip_leading_nonalpha" : {
+        "pattern" : """^\P{L}*(.*)$""",
+        "type" : "pattern_replace",
+        "replacement" : "$1"
+      },
+      "truncateone" : {
+        "pattern" : "^(.).*$",
+        "type" : "pattern_replace",
+        "replacement" : "$1"
+      }
+    },
+    "normalizer" : {
+      "default" : {
+        "filter" : [
+          "asciifolding",
+          "lowercase"
+        ],
+        "type" : "custom"
+      },
+      "ptfilter" : {
+        "type" : "custom",
+        "char_filter" : [
+          "truncateone"
+        ]
+      },
+      "sortfield_normalizer" : {
+        "filter" : [
+          "asciifolding",
+          "lowercase"
+        ],
+        "char_filter" : [
+          "strip_leading_nonalpha"
+        ]
+      },
+      "an_normalizer" : {
+        "char_filter" : [
+          "an_filter"
+        ]
+      },
+      "ccfilter" : {
+        "type" : "custom",
+        "char_filter" : [
+          "truncatetwo"
+        ]
+      },
+      "sw_normalizer" : {
+        "filter" : [
+          "asciifolding",
+          "lowercase"
+        ]
+      }
+    },
+    "analyzer" : {
+      "default_search" : {
+        "filter" : [
+          "asciifolding",
+          "lowercase"
+        ],
+        "char_filter" : [
+          "html_strip"
+        ],
+        "tokenizer" : "standard"
+      },
+      "default" : {
+        "filter" : [
+          "asciifolding",
+          "lowercase",
+          "particles"
+        ],
+        "char_filter" : [
+          "html_strip"
+        ],
+        "tokenizer" : "standard"
+      },
+      "cc_search_analyzer" : {
+        "filter" : [
+          "lowercase"
+        ],
+        "tokenizer" : "whitespace"
+      },
+      "dym_analyzer" : {
+        "filter" : [
+          "lowercase"
+        ],
+        "tokenizer" : "standard"
+      },
+      "sn_analyzer" : {
+        "filter" : [
+          "lowercase",
+          "asciifolding",
+          "sn_filter"
+        ],
+        "type" : "custom",
+        "tokenizer" : "whitespace"
+      },
+      "ccanalyzer" : {
+        "filter" : [
+          "lowercase",
+          "ccpatterns"
+        ],
+        "tokenizer" : "keyword"
+      },
+      "ccfilter" : {
+        "filter" : [
+          "truncatetwo"
+        ],
+        "tokenizer" : "keyword"
+      },
+      "dym_shingle_analyzer" : {
+        "filter" : [
+          "lowercase",
+          "shingle"
+        ],
+        "type" : "custom",
+        "tokenizer" : "standard"
+      }
+    }
+   }
+  },
+  "mappings" : {
+  "dynamic_templates" : [
+    {
+      "default" : {
+        "match" : "*",
+        "mapping" : {
+          "index" : true,
+          "type" : "{dynamic_type}"
+        }
+      }
+    }
+  ],
+  "properties" : {
+    "abstract" : {
+      "type" : "text",
+      "index" : true,
+      "analyzer" : "default",
+      "search_analyzer" : "default_search"
+    },
+    "reviews" : {
+      "properties" : {
+        "language" : {
+          "type" : "text",
+          "index" : true,
+          "analyzer" : "default",
+          "search_analyzer" : "default_search"
+        },
+      }
+    }
+  }
+}
+}
+
+POST _reindex
+{
+  "source":{
+    "index": "zbmath_live_documents_2022_02_14_19_35_34",
+    "_source": "reviews.text",
+    "query": {
+      "match_all": {}
+    }
+  },
+  "dest": {
+    "index": "zbmath_my"
+  }
+}
