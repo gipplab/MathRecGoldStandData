@@ -4,9 +4,11 @@ In this repository, we include the first gold standard dataset for recommending 
 
 ## Repository contents
 
+```
 - [Dataset](#Dataset)
 - [Preprocessing and Seed documents selection](#Preprocessing and Seed documents selection)
-- [Example use case of dataset](Example use case of dataset)
+- [Example use case of dataset](#Example use case of dataset)
+```
 
 ## Dataset
 
@@ -14,10 +16,10 @@ As of Feb-2023, there are 421 recommendation pairs with 80 seed documents.
 
 ### 1. Recommendation pairs.
 
-All recommendation pairs are available (in this file)[] are with their zbMATHOpen_ID. For example: The document with ID:1566951 is ["Noncommutative symmetric algebras of two-sided vector spaces."](https://zbmath.org/?q=an%3A1566951)
+All recommendation pairs are available [in this file](https://github.com/gipplab/MathRecGoldStandData/blob/main/dataset/recommendationPairs.csv) are with their zbMATHOpen_ID. For example: The document with ID:1566951 is ["Noncommutative symmetric algebras of two-sided vector spaces."](https://zbmath.org/?q=an%3A1566951)
 Sample recommendation pairs from the curated dataset.
 
-`
+
 | Seed    | 1st |     2nd  |        3rd |   4th      |  5th       |
 |---------|---------|---------|---------|---------|---------|
 | 1566951 | 4181495      | 930151  | 5083606 | 1579464 | 6338806 |
@@ -25,7 +27,6 @@ Sample recommendation pairs from the curated dataset.
 | 1308161 | 1356576		 | 4193896 | 5638157 | 5007259 |         |
 | 1303018 | 951967		 | 5354085 | 5120555 | 427914  | 224045  |
 | 1591097 | 5049067		 | 3867686 | 1758339 | 2136591 |         |
-`
 
 
 The first column represents the seed documents and subsequent columns ranked recommendations. The recommendations are ranked according to the decreasing order of relevancy.
@@ -33,22 +34,20 @@ The first column represents the seed documents and subsequent columns ranked rec
 
 ### 2. Document contents.
 
-Each document's contents such as title, abstract/review/summarry, authors, MSC codes, Full-text link, references, etc are available in [the separate file]().
+Each document's contents such as title, abstract/review/summarry, authors, MSC codes, Full-text link, references, etc are available in [the separate file](https://github.com/gipplab/MathRecGoldStandData/blob/main/dataset/documentContents.csv).
 
 Example document from the file:
 
-`
 | zbMATH_ID | Title                  | Abstract/Review/Summarry                                       | Authors        | Keywords                                  | MSCs             | Full text link                                | References                       |
 |-----------|------------------------|----------------------------------------------------------------|----------------|-------------------------------------------|------------------|-----------------------------------------------|----------------------------------|
 | 10342     | Maximal contact ...... | The author proves the following theorem: Fix an infinite...... | Cossart V..... | Samuel stratum and desingularization..... | [{code: 14E15... | https://doi.org/10.1215/S0012-7094-91-06303-9 | S. Abhyankar: Resolution of..... |
-`
 
 
 Additionally, contents from any documents from zbMATH Open can be fetched via [zbMATH Open API](https://oai.zbmath.org/) or available in the [repository](https://zenodo.org/record/6448360#.Y_UmrHbP02w).
 
 ## Preprocessing and Seed documents selection
 
-Please install dependencies from [requirements.txt]() before running any scripts.
+Please install dependencies from [requirements.txt](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/requirements.txt) before running any scripts.
 
 ### Preprocessing
 
