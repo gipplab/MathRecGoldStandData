@@ -4,11 +4,10 @@ In this repository, we include the first gold standard dataset for recommending 
 
 ## Repository contents
 
-```
+
 - [Dataset](#Dataset)
-- [Preprocessing and Seed documents selection](#Preprocessing and Seed documents selection)
-- [Example use case of dataset](#Example use case of dataset)
-```
+- [Preprocessing and Seed documents selection](#Preprocessing-and-Seed-documents-selection)
+- [Example use case of dataset](#Example-use-case-of-dataset)
 
 ## Dataset
 
