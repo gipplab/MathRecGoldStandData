@@ -6,6 +6,11 @@ import jsonlines
 from bs4 import BeautifulSoup
 from elasticsearch import Elasticsearch
 
+"""
+Index new ES taking documents from CSV file.
+Please monitor progress via terminal, after running the script.
+"""
+
 es = Elasticsearch()
 
 class CsvIndexer:

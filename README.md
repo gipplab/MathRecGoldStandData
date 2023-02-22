@@ -55,11 +55,11 @@ The following table provides scripts and its functions/steps involved in preproc
 
 | No. | Functionality/Step                       			| Script      	      |
 |-----|-----------------------------------------------------|---------------------|
-| 1   | Load all zbMATH Open documents as loocal .txt files | [getAlldocs.py]()   |
-| 2   | Remove short/irrelevant documents        			| [remvShrtdocs.py]() |
-| 3   | Extract TOIs and remove Non-English documents       | [extractTOIs.py]()  |
-| 4   | Convert LaTeX to MathML and extract MOIs 			| [extractMOIs.py]()  |
-| 5   | Discipline-wise documents                			| [docsPerMSC.py]()   | 
+| 1   | Load all zbMATH Open documents as loocal .txt files | [getAlldocs.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/preProcessing/getAlldocs.py)   |
+| 2   | Remove short/irrelevant documents        			| [remvShrtdocs.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/preProcessing/remvShrtdocs.py) |
+| 3   | Extract TOIs and remove Non-English documents       | [extractTOIs.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/preProcessing/extractTOIs.py)  |
+| 4   | Convert LaTeX to MathML and extract MOIs 			| [extractMOIs.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/preProcessing/extractMOIs.py)  |
+| 5   | Discipline-wise documents                			| [docsPerMSC.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/preProcessing/docsPerMSC.py)   | 
 
 
 ### Seed documents selection
@@ -68,13 +68,11 @@ The representative seed documents selection follows a four step procedure. Each 
 
 | Step No. | Name                              | Script               |
 |----------|-----------------------------------|----------------------|
-| 1        | Mathematical discipline selection | [reprMSCsel.py]()    |
-| 2        | Working dataset creation          | [workingDset.py]()   |
-| 3        | Capture probability calculation   | [captureProb.py]()   |
-| 4        | Final seeds selection             | [finalSeedsSel.py]() |
+| 1        | Mathematical discipline selection | [reprMSCsel.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/seedDocSelection/reprMSCsel.py)    |
+| 2        | Working dataset creation          | [workingDset.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/seedDocSelection/workingDset.py)   |
+| 3        | Capture probability calculation   | [captureProb.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/seedDocSelection/captureProb.py)   |
+| 4        | Final seeds selection             | [finalSeedsSel.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/seedDocSelection/finalSeedsSel.py) |
 
-
-The above mentioned scripts are not all the scripts. Please refer to the [seed documents selection]() folder for more detail.
 
 ## Example use case of dataset
 
@@ -93,10 +91,12 @@ The following table includes scripts and its corresponding functinality for perf
 
 | No. | Functionality/Step                             | Script                |
 |-----|------------------------------------------------|-----------------------|
-| 1   | Load zbMATH Open documents on ES               | [loadDOcsonES.py]()   |
-| 2   | indexing Configuration (text and text + Math ) | [collectionsRef.py]() |
-| 3   | Generate recommendations                       | [genRecms.py]()       |
-| 4   | Evaluate recommendation                        | [evalRecms.py]()      |
+| 1   | Load zbMATH Open documents on ES               | [loadDOcsonES.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/exampleEvaluation/loadDOcsonES.py)   |
+| 2   | indexing Configuration (text and text + Math ) | [collectionsRef.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/exampleEvaluation/collectionsRef.py) |
+| 3   | Generate recommendations                       | [genRecms.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/exampleEvaluation/genRecms.py)       |
+| 4   | Evaluate recommendation                        | [evalRecms.py](https://github.com/gipplab/MathRecGoldStandData/blob/main/src/exampleEvaluation/evalRecms.py)      |
+
+The above mentioned scripts are not all the scripts. Please refer to the [seed documents selection](https://github.com/gipplab/MathRecGoldStandData/tree/main/src/) folder for more detaila.
 
 
 ## License 

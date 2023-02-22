@@ -9,13 +9,15 @@ from spacy.lang.en import English
 from spacy.tokenizer import Tokenizer
 
 
+def loadDocsTest():
 # Loading alreayd calculated frequncy values for disciplines
-with open('pickleszbMATH/complexity/final/DepFreq.pkl', 'rb') as fa:
-	complexDepFreq = pickle.load(fa)
-with open('pickleszbMATH/complexity/final/LenFreq.pkl', 'rb') as fb:
-	complexLenFreq = pickle.load(fb)
-with open('pickleszbMATH/complexity/final/LenFreq.pkl', 'rb') as fc:
-	TokensLenFreq = pickle.load(fc)
+	with open('pickleszbMATH/complexity/final/DepFreq.pkl', 'rb') as fa:
+		complexDepFreq = pickle.load(fa)
+	with open('pickleszbMATH/complexity/final/LenFreq.pkl', 'rb') as fb:
+		complexLenFreq = pickle.load(fb)
+	with open('pickleszbMATH/complexity/final/LenFreq.pkl', 'rb') as fc:
+		TokensLenFreq = pickle.load(fc)
+	return complexDepFreq, complexLenFreq, TokensLenFreq
 
 def percFreqMSCs(mscVals):
 	#print(sorted(list(mscVals[])))

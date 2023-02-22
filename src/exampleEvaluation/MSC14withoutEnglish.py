@@ -3,6 +3,11 @@ from elasticsearch import Elasticsearch
 
 es = Elasticsearch()
 
+"""
+Allows searcg for ES index with specific MSCs.
+Especially important to get documents count per MSCs
+"""
+
 ohneEngMSC14 = es.search(index="temp_zbmath_my",
 	body={"_source": ["id"],
 	"size": 15000,

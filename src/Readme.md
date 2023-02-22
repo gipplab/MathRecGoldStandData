@@ -20,3 +20,18 @@
 	- MSC14withoutEnglish.py
 	- recomPairsStat.py
 	- reindexProp.txt
+
+
+## Elasticsearch indexing configuration
+
+- exampleEvaluation
+	- reindexProp.txt : 
+		- Indexing configurations.
+		- Search Analyzers
+		- Tokenizers
+
+
+- Even if you your "whiteSpace" and "onlyAlphanumeric" as your analyzer configuration, ES will directly remove math terms from the dataset.
+
+- For indexing math, follow the anaylzer configuration from the file: reindexProp.txt
+	- It will index math expressions as whole tokens (without any preprocessing at all) 

@@ -5,6 +5,12 @@ import gzip
 import marshal
 
 
+"""
+For loadind data from marshall file.
+Would be beneficial if direect dump is created from the CSV of all documents.
+"""
+
+
 def all_items(dumpfile):
     while True:
         try:
