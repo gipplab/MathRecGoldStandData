@@ -5,7 +5,6 @@ Although I cannot directly access the zbMATH Open database to provide you with s
 
 If you let me know the area of mathematics you're interested in or provide more information about the document you have in mind, I can help guide you to relevant resources or recommend similar publications.
 
-
 ====================================================
 
 Q: I will provide you documents with Zbl IDs in parentheses and abstracts/reviews/summaries. Please provide 10 recommendations for each of the documents. Only show recommendations that have a Zbl number which means give recommendations from zbMATH Open only. Gnerate recommendations based on semantic similarity of abstracts/reviews/summaries. The result list should be a JSON format and only contains the Zbl numbers of the recommendations. 

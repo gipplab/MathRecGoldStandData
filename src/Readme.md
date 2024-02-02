@@ -21,7 +21,6 @@
 	- recomPairsStat.py
 	- reindexProp.txt
 
-
 ## Elasticsearch indexing configuration
 
 - exampleEvaluation
@@ -29,7 +28,6 @@
 		- Indexing configurations.
 		- Search Analyzers
 		- Tokenizers
-
 
 - Even if you your "whiteSpace" and "onlyAlphanumeric" as your analyzer configuration, ES will directly remove math terms from the dataset.
 
