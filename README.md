@@ -1,6 +1,6 @@
-# Introducing the First Gold Standard Dataset for the Recommendation of Research Papers with Mathematical Content
+# Towards Better STEM Recommendations: A Gold-Standard Dataset with Math Content
 
-In this repository, we include the first gold standard dataset for recommending scientific research articles with mathematical content. Along with the dataset, we provide scripts used to construct the dataset and to run an example evaluation.
+This repository includes the first gold standard dataset for recommending scientific research articles with mathematical content. Along with the dataset, we provide scripts used to construct the dataset and to run an example evaluation.
 
 
 ## Overview of the repo
