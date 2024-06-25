@@ -88,10 +88,9 @@ The representative seed documents selection follows a four step procedure. Each 
 
 | Step No. | Feature                              | Script               |
 |----------|-----------------------------------|----------------------|
-| 1        | Abstract    | src/seedDocSelection/captureProb.py   |
-| 2        | Formulae             | src/seedDocSelection/finalSeedsSel.py |
-| 3        | References             | src/seedDocSelection/finalSeedsSel.py |
-
+| 1        | Abstract    | src\exampleEvaluation/abstractSimil.py |
+| 2        | Formulae             | src\exampleEvaluation/formulaeSimil.py |
+| 3        | References             | src\exampleEvaluation/refrencesSimil.py |
 
 
 ## License 
