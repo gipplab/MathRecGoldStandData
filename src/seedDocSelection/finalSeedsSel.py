@@ -1,119 +1,79 @@
-import os
-import re
-import sys
-import csv
-import random
 import json
-import jsonlines
-import dill as pickle
-from spacy.lang.en import English
-from bs4 import BeautifulSoup
-from collections import defaultdict, OrderedDict
-from spacy.tokenizer import Tokenizer
+import random
+import math
+from collections import defaultdict
 
+def tokBySize(represToks):
+    tokWTsize = defaultdict(lambda: dict())
+    for each_tok in represToks.keys():
+        tokWTsize[len(each_tok)][each_tok] = represToks[each_tok]
+    
+    tokWTsizePro = defaultdict(lambda: dict())
+    for eachSize in tokWTsize.keys():
+        if eachSize not in [0]:
+            tokWTsizePro[eachSize] = tokWTsize[eachSize]
+    return tokWTsizePro
 
-#Es instance
-es = Elasticsearch()
+def overallFreq(keysize, mainDict, ovrlTokcnt):
+    allWordodSize = mainDict[keysize]
+    ttlOccKey = 0
+    for everyWord in allWordodSize.keys():
+        ttlOccKey += allWordodSize[everyWord]
+    return ttlOccKey / ovrlTokcnt
 
-headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Max-Age': '3600',
-    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
-}
-#boilerplate to save retrived doc IDs
-jsonDraft = {
-	"seed": None,
-	"idealRcmnds": None,
-	"baselineRcmnds": None
-}
+def granularProb(dictWithTokVal, sml_n, cap_N, ovrlTokcn):
+    ttlTokSize_i = 0
+    for uniqwrds in dictWithTokVal.keys():
+        ttlTokSize_i += dictWithTokVal[uniqwrds]
+    
+    probSumm = 0
+    for uniqwrds in dictWithTokVal.keys():
+        a_ij = dictWithTokVal[uniqwrds] / ttlTokSize_i
+        f_i = dictWithTokVal[uniqwrds] / ovrlTokcn
+        lambda_i = f_i / (cap_N / sml_n)
+        prob_m = 1 - math.exp(-lambda_i)
+        probSumm += a_ij * prob_m
+    
+    return probSumm
 
-def getmainIDSandSave(dirRec):
-	"""
-	Dinputdir: All documents with working dataset
-	Output: FInal represent sample
-	"""
-	countRecommends = 0
-	textFile = open("textBIB.txt", "w")
-	with open(dirRec+"idealRecommendations.csv", mode ='r') as csvfile:
-		csvFile = csv.reader(csvfile)
-		for lines in csvFile:
-			IdsandRec = list(filter(None, lines))
-			for eachDOc in IdsandRec: 
-				countRecommends += 1
-				try:
-					zbl = getZBLid(eachDOc)
-					if int(eachDOc) == zbl["id"]:
-						bp1 = "https://zbmath.org/bibtex/"
-						bp2 = ".bib"
-						print(bp1+zbl["identifier"]+bp2)
-						req = requests.get(bp1+zbl["identifier"]+bp2, headers)
-						soup = BeautifulSoup(req.content, 'html.parser')
-						textFile.write(soup.prettify())
-				except:
-					print(eachDOc)
-	print(countRecommends)
+def captureProbab(sampleSize, smllTolrgTok):
+    n = sampleSize
+    N = 22892  # Our working dataset size
+    ovrlTokcnt = 0
+    for keySize in smllTolrgTok.keys():
+        for inKeys in smllTolrgTok[keySize].keys():
+            ovrlTokcnt += smllTolrgTok[keySize][inKeys]
+    
+    numrTr = 0
+    denTr = 0
+    for keySize in smllTolrgTok.keys():
+        if keySize > 4:
+            b_j = overallFreq(keySize, smllTolrgTok, ovrlTokcnt)
+            denTr += b_j
+            P_J = granularProb(smllTolrgTok[keySize], n, N, ovrlTokcnt)
+            numrTr += b_j * P_J
+    
+    aggcapProb = numrTr / denTr
+    return aggcapProb
 
+def select_random_documents(input_json_file, sample_size):
+    with open(input_json_file, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    
+    selected_documents = random.sample(list(data.keys()), sample_size)
+    
+    represToks = {doc_id: data[doc_id] for doc_id in selected_documents}
+    
+    smllTolrgTok = tokBySize(represToks)
+    capture_probability = captureProbab(sample_size, smllTolrgTok)
+    
+    return selected_documents, capture_probability
 
-def getTopnRecommn(docContent):
-	recomms = es.search(index="temp_zbmath_my",
-		body={"_source": ["id","score"],
-		"size": n,
-		"query":
-		{
-		"match":{
-		"reviews.text": docContent
-		}},
-		})
-	similarResults = recomms["hits"]["hits"]
-	rankedResults = dict()
-	rank = 0
-	#Rank 0 would be document itself hence not considered
-	for eachRes in similarResults:
-		# Savinf returned ID and Score in a dict with keys as ranks
-		rankedResults[rank] = [eachRes["_source"]["id"], eachRes["_score"]]
-		rank += 1
-	return rankedResults
-
-
-def getZBLid(internalID):
-	recomms = es.search(index="temp_zbmath_my",
-		body={"_source": ["identifier","id"],
-		"query":
-		{
-		"match_phrase":{
-		"id": internalID
-		}},
-		})
-	similarResults = recomms["hits"]["hits"][0]["_source"]
-	return similarResults
-
-
-def verifyZBLid():
-	dirRec = "C:/Users/asa/Desktop/Projects/22Math_recSys/Code/Indexing_formuale_on_ES/code/baseline/idealRecommnds/"
-	textOpen = open("docsWithpdfs.txt").read()
-	downloadedDocs = list(textOpen.split("\n"))
-	headerH = ["document ID"]
-	# print(type(list(textOpen.split("\n"))[0]))
-	with open(dirRec+"idealRecommendationsInaLine.csv", mode ='w') as csvfilewriter:
-		writeCSV = csv.writer(csvfilewriter)
-		listWitAllIds = set()
-		with open(dirRec+"idealRecommendations.csv", mode ='r') as csvfile:
-			csvFile = csv.reader(csvfile)
-			for lines in csvFile:
-				IdsandRec = list(filter(None, lines))
-				for eachDOc in IdsandRec:
-					try:
-						zbl = getZBLid(eachDOc)["identifier"]
-						if zbl in downloadedDocs:
-							print(type(zbl))
-							sys.exit(0)
-						else:
-							listWitAllIds.add(eachDOc)
-					except:
-						continue
-		# print(list(listWitAllIds)[:10])
-		writeCSV.writerow(headerH)
-		for eachID in list(listWitAllIds):
-			writeCSV.writerow([eachID])	
+if __name__ == "__main__":
+    input_json_file = input("Enter the path to the input JSON file: ")
+    sample_size = int(input("Enter the sample size: "))
+    
+    selected_documents, capture_probability = select_random_documents(input_json_file, sample_size)
+    
+    print(f"Selected Documents: {selected_documents}")
+    print(f"Capture Probability: {capture_probability}")

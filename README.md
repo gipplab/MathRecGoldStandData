@@ -1,22 +1,23 @@
 # Towards Better STEM Recommendations: A Gold-Standard Dataset with Math Content
 
-This repository includes the first gold standard dataset for recommending scientific research articles with mathematical content. Along with the dataset, we provide scripts used to construct the dataset and to run an example evaluation.
+This repository includes the first gold standard dataset for recommending scientific research articles with mathematical content. 
+Along with the dataset, we provide scripts used to construct the dataset and to run an example evaluation.
 
 
 ## Overview of the repo
 
 - dataset : Contains recommendations pairs and their contents. (For the content of each file and descrption, please refer to the "dataset" folder)
-- src: Contains python scripts required to come up with the representative seed articles. Additionally, scripts required to use the dataset for evaluating a recommendation system approach. (For the content of each file and descrption, please refer to the "dataset" folder)
+- src: Contains python scripts required to come up the seed documents. Additionally, scripts required to use the dataset for evaluating a recommendation system approach.
 
 ## Main contents of the repository
 
 - [Dataset](#Dataset)
-- [Example use case of dataset](#Example-use-case-of-dataset)
 - [Seed documents Creation](#Preprocessing-and-Seed-documents-selection)
+- [Example use case of dataset](#Example-use-case-of-dataset)
 
 ## Dataset
 
-As of April-2023, there are 421 recommendation pairs with 80 seed research articles.
+As of April-2024, there are 421 recommendation pairs with 80 seed research articles.
 
 ### 1. Recommendation pairs.
 
@@ -49,39 +50,10 @@ Example research article from the file:
 
 Additionally, contents from any research article from zbMATH Open can be fetched via [zbMATH Open API](https://oai.zbmath.org/) directly downloaded from the official repository on zenodo [repository](https://zenodo.org/record/6448360#.Y_UmrHbP02w).
 
-## Example use case of dataset
-
-We demonstrate an example evaluation of recommendation approaches with our dataset. For generating recommendations, we consider zbMATH Open collection. The collection contain 4.5 million documents. To rank recommendations, first we use the BM25 algorithm (a modified TF-IDF scheme) with cosine similarity provided by the default search capability of [Elasticsearch(ES)](https://www.elastic.co/).Second, we utlize language models to generate embeddings and then use cosine similarity to get relevant recommendations.
-
-1. Elasticsearch Versions used
-	1. Elasticsearch: [7.9.3](https://www.elastic.co/jp/downloads/past-releases/elasticsearch-7-9-3)
-	2. Kibana (only for testing purposes, not neede to run evaluation): [7.9.3](https://www.elastic.co/downloads/past-releases/kibana-7-9-3)
-
-The following table includes scripts and its corresponding functinality for perfoming example evaluation. Our scripts include experiments sufficient to run on a local system. However, we expect that at least 20 GB of free space is available for Elasticsearch.
-
-
-| No. | Functionality/Step                             | Script                |
-|-----|------------------------------------------------|-----------------------|
-| 1   | Load zbMATH Open documents on ES               | src/exampleEvaluation/loadDOcsonES.py   |
-| 2   | indexing Configuration (text and text + Math ) | src/exampleEvaluation/collectionsRef.py |
-| 3   | Generate recommendations                       | src/exampleEvaluation/genRecms.py       |
-| 4   | Evaluate recommendation                        | src/exampleEvaluation/evalRecms.py      |
-| 5   | Generate embeddings and calculate cosine similarity to generate recommendations | src/baseline/langModelEval.py  |
-
-The above mentioned scripts are not all the scripts. Please refer to the "main/src/" folder for more detaila.
-
-### Example recommendation generation
-
-#### Make sure elasticsearch cluster is running
-
-python src/exampleEvaluation/genRecms.py 
-
 
 ## Seed documents Creation
 
 Here we mention the scripts to get the representative seeds from the zbMATH Open. Note: These steps are not required if you directly want to use the dataset. Please refer to the "Example use case of the dataset" below for information regarding utilizing dataset for evaluation.
-
-Please install dependencies from src/requirements.txt before running any scripts.
 
 ### virtual environment
 `python3 -m venv recseedsel` (More on creating [virtual environment](https://docs.python.org/3/library/venv.html))
@@ -100,7 +72,6 @@ The following table provides scripts and its functions/steps involved in preproc
 | 2   | Remove short/irrelevant documents        			| src/preProcessing/remvShrtdocs.py |
 | 3   | Extract TOIs and remove Non-English documents       | src/preProcessing/extractTOIs.py  |
 | 4   | Convert LaTeX to MathML and extract MOIs 			| src/preProcessing/extractMOIs.py  |
-| 5   | Discipline-wise documents                			| src/preProcessing/docsPerMSC.py   | 
 
 
 ### 2. Seed documents selection
@@ -109,10 +80,18 @@ The representative seed documents selection follows a four step procedure. Each 
 
 | Step No. | Name                              | Script               |
 |----------|-----------------------------------|----------------------|
-| 1        | Mathematical discipline selection | src/seedDocSelection/reprMSCsel.py    |
-| 2        | Working dataset creation          | src/seedDocSelection/workingDset.py   |
-| 3        | Capture probability calculation   | src/seedDocSelection/captureProb.py   |
-| 4        | Final seeds selection             | src/seedDocSelection/finalSeedsSel.py |
+| 1        | Capture probability calculation   | src/seedDocSelection/captureProb.py   |
+| 2        | Final seeds selection             | src/seedDocSelection/finalSeedsSel.py |
+
+## Example use case of dataset (Evaluation Section 3.2)
+
+
+| Step No. | Feature                              | Script               |
+|----------|-----------------------------------|----------------------|
+| 1        | Abstract    | src/seedDocSelection/captureProb.py   |
+| 2        | Formulae             | src/seedDocSelection/finalSeedsSel.py |
+| 3        | References             | src/seedDocSelection/finalSeedsSel.py |
+
 
 
 ## License 
